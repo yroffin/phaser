@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import {
   Engine, Scene, FreeCamera, Vector3, HemisphericLight, Mesh,
-  ArcRotateCamera, AnimationPropertiesOverride, Color3, DirectionalLight, ShadowGenerator, SceneLoader
+  ArcRotateCamera, AnimationPropertiesOverride, Color3, DirectionalLight, ShadowGenerator, SceneLoader, GizmoManager
 } from 'babylonjs';
 import { Button, Control, AdvancedDynamicTexture, StackPanel } from 'babylonjs-gui';
 
@@ -39,6 +39,17 @@ export class BabylonComponent implements OnInit, AfterViewInit {
     window.addEventListener('resize', () => {
       this.engine.resize();
     });
+  }
+
+  private gizmoManager(scene: Scene) {
+    // Initialize GizmoManager
+    const gizmoManager = new GizmoManager(scene);
+
+    // Initialize all gizmos
+    gizmoManager.boundingBoxGizmoEnabled = true;
+    gizmoManager.positionGizmoEnabled = true;
+    gizmoManager.rotationGizmoEnabled = true;
+    gizmoManager.scaleGizmoEnabled = true;
   }
 
   private createScene(element: any) {
