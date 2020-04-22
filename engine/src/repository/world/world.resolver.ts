@@ -1,5 +1,5 @@
 import { Resolver, Query } from '@nestjs/graphql';
-import { World, Item } from '../entities/world';
+import { World, Item, Scene } from '../entities/world';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Resolver()
@@ -7,7 +7,8 @@ export class WorldResolver {
 
     constructor(
         @InjectRepository(World) private world,
-        @InjectRepository(Item) private Item) {
+        @InjectRepository(Scene) private scene,
+        @InjectRepository(Item) private item) {
 
     }
 
@@ -17,7 +18,12 @@ export class WorldResolver {
     }
 
     @Query(() => [Item])
-    async items(): Promise<World[]> {
-        return await this.Item.find();
+    async scenes(): Promise<Scene[]> {
+        return await this.scene.find();
+    }
+
+    @Query(() => [Item])
+    async items(): Promise<Item[]> {
+        return await this.item.find();
     }
 }

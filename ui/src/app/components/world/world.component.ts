@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WorldService } from 'src/app/services/world.service';
-import { World } from 'src/app/models/world';
+import { WorldService, SceneService } from 'src/app/services/world.service';
+import { World, Scene } from 'src/app/models/world';
 import { TreeNode } from 'primeng/api';
 import * as _ from 'lodash';
 
@@ -12,32 +12,59 @@ import * as _ from 'lodash';
 })
 export class WorldComponent implements OnInit {
 
-  loading$: Observable<boolean>;
+  loadingWorld$: Observable<boolean>;
   worlds$: Observable<World[]>;
 
-  tree: TreeNode[];
+  worlds: TreeNode[];
 
-  constructor(private worldService: WorldService) {
+  loadingScene$: Observable<boolean>;
+  scenes$: Observable<Scene[]>;
+
+  constructor(
+    private worldService: WorldService,
+    private sceneService: SceneService
+  ) {
+    // Worlds
     this.worlds$ = this.worldService.entities$;
-    this.loading$ = this.worldService.loading$;
+    this.loadingWorld$ = this.worldService.loading$;
     this.worlds$.subscribe(
       (worlds: World[]) => {
-        this.tree = [];
+        this.worlds = [];
 
-        this.tree = _.map(worlds, (world) => {
+        this.worlds = _.map(worlds, (world) => {
           return {
             data: {
               name: world.name,
               size: '75kb',
-              type: 'World'
+              type: 'World',
+              entity: world
             },
-            children: []
+            children: _.map(world.items, (item) => {
+              return {
+                data: {
+                  name: item.name,
+                  size: '75kb',
+                  type: 'Item'
+                },
+                children: []
+              };
+            }).concat(_.map(world.scenes, (scene) => {
+              return {
+                data: {
+                  name: scene.name,
+                  size: '75kb',
+                  type: 'Scene'
+                },
+                children: []
+              };
+            }))
           };
         });
 
-        console.log('world', this.tree);
-
       });
+    // Scene
+    this.scenes$ = this.sceneService.entities$;
+    this.loadingScene$ = this.sceneService.loading$;
   }
 
   ngOnInit(): void {
@@ -46,5 +73,28 @@ export class WorldComponent implements OnInit {
 
   getWorlds() {
     this.worldService.getAll();
+  }
+
+  addWorld(event: any) {
+    this.worldService.add({
+      id: undefined,
+      name: 'default'
+    });
+  }
+
+  addScene(event: any, entity: World) {
+    this.sceneService.add({
+      id: undefined,
+      name: 'default'
+    }).subscribe(
+      (scene) => {
+        console.log(entity);
+        this.worldService.update({
+          id: entity.id,
+          name: entity.name,
+          scenes:  entity.scenes.concat(scene)
+        });
+      }
+    );
   }
 }

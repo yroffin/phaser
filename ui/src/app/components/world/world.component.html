@@ -1,6 +1,8 @@
 <p>world works!</p>
 
-<p-treeTable [value]="tree">
+<button pButton type="button" label="Add world" (click)="addWorld($event)"></button>
+
+<p-treeTable [value]="worlds">
     <ng-template pTemplate="header">
         <tr>
             <th>Name</th>
@@ -15,7 +17,7 @@
                 {{rowData.name}}
             </td>
             <td>{{rowData.size}}</td>
-            <td>{{rowData.type}}</td>
+            <td>{{rowData.type}} <button *ngIf="rowData.type === 'World'" pButton type="button" label="Add scene" (click)="addScene($event, rowData.entity)"></button></td>
         </tr>
     </ng-template>
 </p-treeTable>

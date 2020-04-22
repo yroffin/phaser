@@ -5,7 +5,14 @@
 type World {
   id: ID!
   name: String!
+  scenes: [Scene!]
   items: [Item!]
+}
+
+type Scene {
+  id: ID!
+  name: String!
+  world: World!
 }
 
 type Item {
@@ -16,5 +23,6 @@ type Item {
 
 type Query {
   worlds: [World!]!
+  scenes: [Item!]!
   items: [Item!]!
 }

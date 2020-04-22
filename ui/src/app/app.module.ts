@@ -14,6 +14,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { WorldComponent } from './components/world/world.component';
 
 import { TreeTableModule } from 'primeng/treetable';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { TreeTableModule } from 'primeng/treetable';
     EffectsModule.forRoot([]),
     EntityDataModule.forRoot(entityConfig),
     StoreModule.forRoot({}, {}),
-    TreeTableModule
+    TreeTableModule,
+    ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
