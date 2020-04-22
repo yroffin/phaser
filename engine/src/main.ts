@@ -13,8 +13,10 @@ CrudConfigService.load({
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'warn', 'log']
+    logger: ['error', 'warn', 'log', 'debug']
   });
+
+  app.setGlobalPrefix('/api');
 
   const options = new DocumentBuilder()
     .addBearerAuth({

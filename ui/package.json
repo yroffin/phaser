@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -19,12 +19,21 @@
     "@angular/platform-browser": "~9.1.1",
     "@angular/platform-browser-dynamic": "~9.1.1",
     "@angular/router": "~9.1.1",
+    "@angular/cdk": "9.2.1",
+    "@ngrx/data": "9.1.0",
+    "@ngrx/effects": "^9.1.0",
+    "@ngrx/entity": "^9.1.0",
+    "@ngrx/store": "^9.1.0",
+    "babylonjs": "4.1.0",
+    "babylonjs-gui": "4.1.0",
+    "phaser": "3.22.0",
+    "primeng": "^9.0.6",
+    "primeicons": "2.0.0",
+    "primeflex": "1.0.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2",
-    "phaser": "3.22.0",
-    "babylonjs": "4.1.0",
-    "babylonjs-gui": "4.1.0"
+    "lodash": "4.17.15"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.1",

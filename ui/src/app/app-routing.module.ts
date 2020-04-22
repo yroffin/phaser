@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PhaserComponent } from './components/phaser/phaser.component';
 import { BabylonComponent } from './components/babylon/babylon.component';
 import { MainComponent } from './components/main/main.component';
+import { WorldComponent } from './components/world/world.component';
 
 
 const routes: Routes = [{
@@ -12,8 +13,12 @@ const routes: Routes = [{
   path: 'babylon',
   component: BabylonComponent
 }, {
+  path: 'worlds',
+  component: WorldComponent
+},
+{
   path: '',
-  component: MainComponent
+  component: WorldComponent
 }];
 
 @NgModule({
