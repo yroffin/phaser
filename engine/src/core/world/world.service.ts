@@ -1,6 +1,6 @@
 import { Injectable, Controller } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { World, Item, Scene } from 'src/repository/entities/world';
+import { World, Scene, Camera } from 'src/repository/entities/world';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -18,8 +18,8 @@ export class SceneService extends TypeOrmCrudService<Scene> {
 }
 
 @Injectable()
-export class ItemService extends TypeOrmCrudService<Item> {
-    constructor(@InjectRepository(Item) repo) {
+export class CameraService extends TypeOrmCrudService<Camera> {
+    constructor(@InjectRepository(Camera) repo) {
         super(repo);
     }
 }

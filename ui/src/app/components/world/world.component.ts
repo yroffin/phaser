@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WorldService, SceneService } from 'src/app/services/world.service';
-import { World, Scene } from 'src/app/models/world';
+import { WorldService, SceneService, CameraService } from 'src/app/services/world.service';
+import { World, Scene, Camera } from 'src/app/models/world';
 import { TreeNode } from 'primeng/api';
 import * as _ from 'lodash';
 
@@ -12,6 +12,9 @@ import * as _ from 'lodash';
 })
 export class WorldComponent implements OnInit {
 
+  showScene = false;
+  showCamera = false;
+
   loadingWorld$: Observable<boolean>;
   worlds$: Observable<World[]>;
 
@@ -20,9 +23,15 @@ export class WorldComponent implements OnInit {
   loadingScene$: Observable<boolean>;
   scenes$: Observable<Scene[]>;
 
+  currentScene: Scene;
+  scene: TreeNode[];
+
+  currentCamera: Camera;
+
   constructor(
     private worldService: WorldService,
-    private sceneService: SceneService
+    private sceneService: SceneService,
+    private cameraService: CameraService
   ) {
     // Worlds
     this.worlds$ = this.worldService.entities$;
@@ -34,30 +43,24 @@ export class WorldComponent implements OnInit {
         this.worlds = _.map(worlds, (world) => {
           return {
             data: {
+              id: world.id,
               name: world.name,
-              size: '75kb',
+              size: world.scenes.length,
               type: 'World',
               entity: world
             },
-            children: _.map(world.items, (item) => {
+            children: _.map(world.scenes, (scene) => {
               return {
                 data: {
-                  name: item.name,
-                  size: '75kb',
-                  type: 'Item'
-                },
-                children: []
-              };
-            }).concat(_.map(world.scenes, (scene) => {
-              return {
-                data: {
+                  id: scene.id,
                   name: scene.name,
-                  size: '75kb',
-                  type: 'Scene'
+                  size: 0,
+                  type: 'Scene',
+                  entity: scene
                 },
                 children: []
               };
-            }))
+            })
           };
         });
 
@@ -88,13 +91,68 @@ export class WorldComponent implements OnInit {
       name: 'default'
     }).subscribe(
       (scene) => {
-        console.log(entity);
         this.worldService.update({
           id: entity.id,
           name: entity.name,
-          scenes:  entity.scenes.concat(scene)
+          scenes: entity.scenes.concat(scene)
         });
       }
     );
   }
+
+  viewScene(event: any, entity: Scene) {
+    this.sceneService.getByKey(entity.id).subscribe(
+      (scene) => {
+        this.showScene = true;
+        this.currentScene = scene;
+
+        this.scene = [{
+          data: {
+            id: this.currentScene.id,
+            name: this.currentScene.name,
+            size: 0,
+            type: 'Scene',
+            entity: this.currentScene
+          },
+          children: _.map(this.currentScene.cameras, (camera) => {
+            return {
+              data: {
+                id: camera.id,
+                name: camera.name,
+                size: 0,
+                type: 'Camera',
+                entity: camera
+              },
+              children: []
+            };
+          })
+        }];
+      }
+    );
+  }
+
+  addCamera(event: any, entity: Scene) {
+    this.cameraService.add({
+      id: undefined,
+      name: 'camera'
+    }).subscribe(
+      (camera) => {
+        this.sceneService.update({
+          id: entity.id,
+          name: entity.name,
+          cameras: entity.cameras.concat(camera)
+        });
+      }
+    );
+  }
+
+  editCamera(event: any, entity: Camera) {
+    this.cameraService.getByKey(entity.id).subscribe(
+      (camera) => {
+        this.showCamera = true;
+        this.currentCamera = camera;
+      }
+    );
+  }
+
 }

@@ -6,23 +6,23 @@ type World {
   id: ID!
   name: String!
   scenes: [Scene!]
-  items: [Item!]
 }
 
 type Scene {
   id: ID!
   name: String!
   world: World!
+  cameras: [Camera!]
 }
 
-type Item {
+type Camera {
   id: ID!
   name: String!
-  world: World!
+  scene: Scene!
 }
 
 type Query {
   worlds: [World!]!
-  scenes: [Item!]!
-  items: [Item!]!
+  scenes: [Scene!]!
+  cameras: [Camera!]!
 }

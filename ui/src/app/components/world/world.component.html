@@ -5,19 +5,73 @@
 <p-treeTable [value]="worlds">
     <ng-template pTemplate="header">
         <tr>
+            <th>Id</th>
             <th>Name</th>
             <th>Size</th>
             <th>Type</th>
+            <th>Action</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
         <tr>
+            <td>{{rowData.id}}</td>
             <td>
                 <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                 {{rowData.name}}
             </td>
             <td>{{rowData.size}}</td>
-            <td>{{rowData.type}} <button *ngIf="rowData.type === 'World'" pButton type="button" label="Add scene" (click)="addScene($event, rowData.entity)"></button></td>
+            <td>{{rowData.type}}</td>
+            <td>
+                <i *ngIf="rowData.type === 'World'" (click)="addScene($event, rowData.entity)" class="pi pi-sitemap"
+                    style="font-size: 2em"></i>
+                <i *ngIf="rowData.type === 'Scene'" (click)="viewScene($event, rowData.entity)"
+                    class="pi pi-search-plus" style="font-size: 2em"></i>
+            </td>
         </tr>
     </ng-template>
 </p-treeTable>
+
+<p-dialog modal=true header="Scene" [(visible)]="showScene">
+    <p-treeTable [value]="scene">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+            <tr>
+                <td>{{rowData.id}}</td>
+                <td>
+                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                    {{rowData.name}}
+                </td>
+                <td>{{rowData.size}}</td>
+                <td>{{rowData.type}}</td>
+                <td>
+                    <i *ngIf="rowData.type === 'Scene'" (click)="addCamera($event, rowData.entity)" class="pi pi-camera"
+                        style="font-size: 2em"></i>
+                    <i *ngIf="rowData.type === 'Camera'" (click)="editCamera($event, rowData.entity)"
+                        class="pi pi-pencil" style="font-size: 2em"></i>
+                </td>
+            </tr>
+        </ng-template>
+    </p-treeTable>
+</p-dialog>
+
+<p-dialog modal=true header="Camera" [(visible)]="showCamera">
+    <div *ngIf="currentCamera" class="ui-g ui-fluid">
+        <form>
+            <div class="ui-g-12 ui-md-4">
+                <div class="ui-inputgroup">
+                    <span class="ui-inputgroup-addon"><i class="pi pi-play"></i></span>
+                    <input type="text" pInputText placeholder="default" [(ngModel)]="currentCamera.name"
+                        [ngModelOptions]="{standalone: true}">
+                </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>

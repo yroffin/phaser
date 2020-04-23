@@ -22,11 +22,6 @@ export class World {
     @ApiProperty({ type: () => Scene, isArray: true })
     @OneToMany<Scene>(() => Scene, scene => scene.world, {eager: true})
     scenes: Scene[];
-
-    @Field(() => [Item], {defaultValue: []})
-    @ApiProperty({ type: () => Item, isArray: true})
-    @OneToMany<Item>(() => Item, item => item.world, {eager: true})
-    items: Item[];
 }
 
 @Entity("scene")
@@ -44,15 +39,22 @@ export class Scene {
     @Column({ name: "name" })
     name?: string
 
+    // World
     @Field()
     @ApiProperty({ type: () => World })
-    @ManyToOne<World>(() => World, world => world.items, {lazy: true})
+    @ManyToOne<World>(() => World, world => world.scenes, {lazy: true})
     world: World;
+
+    // Camera
+    @Field(() => [Camera], {defaultValue: []})
+    @ApiProperty({ type: () => Camera, isArray: true })
+    @OneToMany<Camera>(() => Camera, camera => camera.scene, {eager: true})
+    cameras: Camera[];
 }
 
-@Entity("item")
+@Entity("camera")
 @ObjectType()
-export class Item {
+export class Camera {
     @Field(type => ID)
     @ApiProperty({ type: 'string' })
     @IsUUID()
@@ -66,7 +68,7 @@ export class Item {
     name?: string
 
     @Field()
-    @ApiProperty({ type: () => World })
-    @ManyToOne<World>(() => World, world => world.items, {lazy: true})
-    world: World;
+    @ApiProperty({ type: () => Scene })
+    @ManyToOne<Scene>(() => Scene, scene => scene.cameras, {lazy: true})
+    scene: Scene;
 }

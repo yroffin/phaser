@@ -1,8 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { WorldService, ItemService, SceneService } from './world.service';
+import { WorldService, SceneService, CameraService } from './world.service';
 import { Crud } from '@nestjsx/crud';
-import { World, Item, Scene } from 'src/repository/entities/world';
+import { World, Scene, Camera } from 'src/repository/entities/world';
 
 @ApiTags('world')
 @Crud({
@@ -18,8 +18,7 @@ import { World, Item, Scene } from 'src/repository/entities/world';
     },
     query: {
         join: {
-            scenes: { eager: true },
-            items: { eager: true },
+            scenes: { eager: true }
         }
     }
 })
@@ -33,6 +32,18 @@ export class WorldController {
 @Crud({
     model: {
         type: Scene
+    },
+    params: {
+        id: {
+            field: 'id',
+            type: 'uuid',
+            primary: true,
+        },
+    },
+    query: {
+        join: {
+            cameras: { eager: true }
+        }
     }
 })
 @Controller('scene')
@@ -41,14 +52,21 @@ export class SceneController {
     }
 }
 
-@ApiTags('world')
+@ApiTags('camera')
 @Crud({
     model: {
-        type: Item
-    }
+        type: Camera
+    },
+    params: {
+        id: {
+            field: 'id',
+            type: 'uuid',
+            primary: true,
+        },
+    },
 })
-@Controller('item')
-export class ItemController {
-    constructor(private service: ItemService) {
+@Controller('camera')
+export class CameraController {
+    constructor(private service: CameraService) {
     }
 }

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { WorldService, ItemService, SceneService } from './world/world.service';
+import { WorldService, SceneService, CameraService } from './world/world.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { World, Item, Scene } from 'src/repository/entities/world';
-import { WorldController, ItemController, SceneController } from './world/world.controller';
+import { World, Scene, Camera } from 'src/repository/entities/world';
+import { WorldController, SceneController, CameraController } from './world/world.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([World,Item,Scene])],
-  providers: [WorldService,ItemService,SceneService],
-  controllers: [WorldController,ItemController,SceneController]
+  imports: [TypeOrmModule.forFeature([World,Scene,Camera])],
+  providers: [WorldService,SceneService,CameraService],
+  controllers: [WorldController,SceneController, CameraController]
 })
 export class CoreModule {}

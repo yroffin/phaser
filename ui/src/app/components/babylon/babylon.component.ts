@@ -118,6 +118,9 @@ export class BabylonComponent implements OnInit, AfterViewInit {
       helper.setMainColor(Color3.Gray());
       helper.ground.position.y += 0.01;
 
+      // Create a built-in 'ground' shape; its constructor takes 6 params : name, width, height, subdivision, scene, updatable
+      const ground = Mesh.CreateGround('ground1', 600, 600, 200, scene, false);
+
       // ROBOT
       skeleton.animationPropertiesOverride = new AnimationPropertiesOverride();
       skeleton.animationPropertiesOverride.enableBlending = true;

@@ -7,4 +7,10 @@ export class World {
 export class Scene {
     id!: string;
     name?: string;
+    cameras?: Camera[];
+}
+
+export class Camera {
+    id!: string;
+    name?: string;
 }
