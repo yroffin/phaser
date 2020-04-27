@@ -18,9 +18,9 @@ export class World {
     @Column({ name: "name" })
     name?: string
 
-    @Field(() => [Scene], {defaultValue: []})
+    @Field(() => [Scene], { defaultValue: [] })
     @ApiProperty({ type: () => Scene, isArray: true })
-    @OneToMany<Scene>(() => Scene, scene => scene.world, {eager: true})
+    @OneToMany<Scene>(() => Scene, scene => scene.world, { eager: true })
     scenes: Scene[];
 }
 
@@ -42,14 +42,19 @@ export class Scene {
     // World
     @Field()
     @ApiProperty({ type: () => World })
-    @ManyToOne<World>(() => World, world => world.scenes, {lazy: true})
+    @ManyToOne<World>(() => World, world => world.scenes, { lazy: true })
     world: World;
 
     // Camera
-    @Field(() => [Camera], {defaultValue: []})
+    @Field(() => [Camera], { defaultValue: [] })
     @ApiProperty({ type: () => Camera, isArray: true })
-    @OneToMany<Camera>(() => Camera, camera => camera.scene, {eager: true})
+    @OneToMany<Camera>(() => Camera, camera => camera.scene, { eager: true })
     cameras: Camera[];
+}
+
+enum CameraType {
+    FreeCamera = "FreeCamera",
+    ArcRotateCamera = "ArcRotateCamera"
 }
 
 @Entity("camera")
@@ -65,10 +70,16 @@ export class Camera {
     @ApiProperty({ type: 'string' })
     @IsString()
     @Column({ name: "name" })
-    name?: string
+    name!: string
+
+    @Field()
+    @ApiProperty({ type: 'string' })
+    @IsString()
+    @Column({ name: "type" })
+    type!: CameraType
 
     @Field()
     @ApiProperty({ type: () => Scene })
-    @ManyToOne<Scene>(() => Scene, scene => scene.cameras, {lazy: true})
+    @ManyToOne<Scene>(() => Scene, scene => scene.cameras, { lazy: true })
     scene: Scene;
 }

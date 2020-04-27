@@ -18,6 +18,7 @@ type Scene {
 type Camera {
   id: ID!
   name: String!
+  type: String!
   scene: Scene!
 }
 

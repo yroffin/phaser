@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WorldService, SceneService, CameraService } from 'src/app/services/world.service';
-import { World, Scene, Camera } from 'src/app/models/world';
+import { World, Scene, Camera, CameraType } from 'src/app/models/world';
 import { TreeNode } from 'primeng/api';
 import * as _ from 'lodash';
 
@@ -49,6 +49,7 @@ export class WorldComponent implements OnInit {
               type: 'World',
               entity: world
             },
+            expanded: true,
             children: _.map(world.scenes, (scene) => {
               return {
                 data: {
@@ -58,6 +59,7 @@ export class WorldComponent implements OnInit {
                   type: 'Scene',
                   entity: scene
                 },
+                expanded: true,
                 children: []
               };
             })
@@ -68,6 +70,10 @@ export class WorldComponent implements OnInit {
     // Scene
     this.scenes$ = this.sceneService.entities$;
     this.loadingScene$ = this.sceneService.loading$;
+    this.scenes$.subscribe(
+      (scenes: Scene[]) => {
+        console.log('notify', scenes);
+      });
   }
 
   ngOnInit(): void {
@@ -114,6 +120,7 @@ export class WorldComponent implements OnInit {
             type: 'Scene',
             entity: this.currentScene
           },
+          expanded: true,
           children: _.map(this.currentScene.cameras, (camera) => {
             return {
               data: {
@@ -123,7 +130,8 @@ export class WorldComponent implements OnInit {
                 type: 'Camera',
                 entity: camera
               },
-              children: []
+              children: [],
+              expanded: true
             };
           })
         }];
@@ -134,7 +142,8 @@ export class WorldComponent implements OnInit {
   addCamera(event: any, entity: Scene) {
     this.cameraService.add({
       id: undefined,
-      name: 'camera'
+      name: 'camera',
+      type: CameraType.FreeCamera
     }).subscribe(
       (camera) => {
         this.sceneService.update({
@@ -150,9 +159,15 @@ export class WorldComponent implements OnInit {
     this.cameraService.getByKey(entity.id).subscribe(
       (camera) => {
         this.showCamera = true;
-        this.currentCamera = camera;
+        this.currentCamera = _.clone(camera);
       }
     );
   }
 
+  updateCamera(event: any, entity: Camera) {
+    this.cameraService.update(entity).subscribe(
+      (camera) => {
+      }
+    );
+  }
 }

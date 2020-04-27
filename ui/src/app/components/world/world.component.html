@@ -5,8 +5,8 @@
 <p-treeTable [value]="worlds">
     <ng-template pTemplate="header">
         <tr>
-            <th>Id</th>
             <th>Name</th>
+            <th>Id</th>
             <th>Size</th>
             <th>Type</th>
             <th>Action</th>
@@ -14,11 +14,11 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
         <tr>
-            <td>{{rowData.id}}</td>
             <td>
                 <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                 {{rowData.name}}
             </td>
+            <td>{{rowData.id}}</td>
             <td>{{rowData.size}}</td>
             <td>{{rowData.type}}</td>
             <td>
@@ -35,8 +35,8 @@
     <p-treeTable [value]="scene">
         <ng-template pTemplate="header">
             <tr>
-                <th>Id</th>
                 <th>Name</th>
+                <th>Id</th>
                 <th>Size</th>
                 <th>Type</th>
                 <th>Action</th>
@@ -44,11 +44,11 @@
         </ng-template>
         <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
             <tr>
-                <td>{{rowData.id}}</td>
                 <td>
                     <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                     {{rowData.name}}
                 </td>
+                <td>{{rowData.id}}</td>
                 <td>{{rowData.size}}</td>
                 <td>{{rowData.type}}</td>
                 <td>
@@ -63,14 +63,21 @@
 </p-dialog>
 
 <p-dialog modal=true header="Camera" [(visible)]="showCamera">
-    <div *ngIf="currentCamera" class="ui-g ui-fluid">
-        <form>
-            <div class="ui-g-12 ui-md-4">
-                <div class="ui-inputgroup">
-                    <span class="ui-inputgroup-addon"><i class="pi pi-play"></i></span>
-                    <input type="text" pInputText placeholder="default" [(ngModel)]="currentCamera.name"
-                        [ngModelOptions]="{standalone: true}">
-                </div>
+    <div *ngIf="currentCamera">
+        <form #let>
+            <div class="p-grid">
+                <div class="p-col">Name</div>
+                <div class="p-col"><input type="text" placeholder="default" [(ngModel)]="currentCamera.name"
+                        name="name"></div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col">Type</div>
+                <div class="p-col"><input type="text" placeholder="default" [(ngModel)]="currentCamera.type"
+                        name="type"></div>
+            </div>
+            <div class="p-grid">
+                <button pButton type="button" label="Update camera"
+                    (click)="updateCamera($event,currentCamera)"></button>
             </div>
         </form>
     </div>

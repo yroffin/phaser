@@ -10,7 +10,13 @@ export class Scene {
     cameras?: Camera[];
 }
 
+export enum CameraType {
+    FreeCamera = 'FreeCamera',
+    ArcRotateCamera = 'ArcRotateCamera'
+}
+
 export class Camera {
     id!: string;
-    name?: string;
+    name!: string;
+    type!: CameraType;
 }
