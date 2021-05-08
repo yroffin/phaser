@@ -33,7 +33,7 @@
     "class-validator": "0.12.1",
     "@nestjsx/crud-request": "4.4.5",
     "@nestjsx/crud-typeorm": "4.4.5",
-    "typeorm": "0.2.24",
+    "typeorm": "0.2.25",
     "sqlite3": "4.1.1",
     "@nestjs/graphql": "7.3.4",
     "graphql-tools": "5.0.0",
